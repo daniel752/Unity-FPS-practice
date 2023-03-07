@@ -9,6 +9,7 @@ public class EnemyHealth : HealthSystem
     public Slider healthBar;
     public GameObject HealthBarUI;
     public GameObject dyingEffect;
+
     void Awake()
     {
         health = maxHealth;
@@ -37,6 +38,8 @@ public class EnemyHealth : HealthSystem
                 health = 0;
                 Destroy(gameObject);
                 Instantiate(dyingEffect,transform.position,transform.rotation);
+                Enemy enemy = gameObject.GetComponent<Enemy>();
+                enemy.Die();
             }
         }
     }

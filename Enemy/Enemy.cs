@@ -19,6 +19,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] float attackRange = 5;
     [SerializeField] float damage = 2;
     [SerializeField] float timeBetweenAttacks = 3;
+    [SerializeField] PlayerExperience playerExperience;
     void Start()
     {
         stateMachine = GetComponent<StateMachine>();
@@ -27,6 +28,7 @@ public class Enemy : MonoBehaviour
         detectionLayer = LayerMask.GetMask("Player");
         weapon = GetComponent<Weapon>();
         target = null;
+        playerExperience = GameObject.FindWithTag("Player").GetComponent<PlayerExperience>();
     }
 
     // Update is called once per frame
@@ -45,9 +47,14 @@ public class Enemy : MonoBehaviour
     public void MoveToPlayer()
     {
         //Move towards player
-        Debug.Log(name + " moving to " + target.name);
+        // Debug.Log(name + " moving to " + target.name);
         agent.SetDestination(target.transform.position);
         // transform.position += transform.TransformDirection(transform.forward * moveSpeed * Time.deltaTime);
+    }
+    public void Die()
+    {
+        Debug.Log($"{this} died");
+        playerExperience.GainExp(10);
     }
     public void SetTarget(GameObject target)
     {
@@ -65,10 +72,10 @@ public class Enemy : MonoBehaviour
     {
         if (Vector3.Distance(transform.position,target.transform.position) <= attackRange)
         {
-            Debug.Log("Target " + target.name + " in range");
+            // Debug.Log("Target " + target.name + " in range");
             return true;
         }
-        Debug.Log("Target " + target.name + " not in range");
+        // Debug.Log("Target " + target.name + " not in range");
         return false;
     }
     public float GetDamage()

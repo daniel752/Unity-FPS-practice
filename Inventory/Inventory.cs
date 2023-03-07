@@ -7,22 +7,16 @@ public class Inventory : MonoBehaviour
     public List<InventoryItem> inventoryItems = new List<InventoryItem>();
     public List<Item> items = new List<Item>();
     public GameObject weaponSlot;
-    private Weapon weapon;
+    List<InventoryItem> equipmentItems = new List<InventoryItem>();
     [SerializeField] private InventoryManager inventoryManager;
-    // public Dictionary<Item, InventoryItem> itemDictionary = new Dictionary<Item, InventoryItem>();
 
     public void AddItem(Item item)
-    {
-        // if (item.stackable && itemDictionary.TryGetValue(item, out InventoryItem itemSlot))
-        // inventoryItems.Find(i => i.item.itemName == item.itemName);
-        
+    {   
         if (item.stackable && items.Contains(item))
         {
             InventoryItem tempItem = inventoryItems.Find(i => i.item.itemName == item.itemName); 
             tempItem.AddToStack(item.amount);
-            // inventoryItems.Find(i => i.item.itemName == item.itemName).AddToStack();
             items.Add(item);
-            // inventoryItems.AddToStack();
             inventoryManager.UpdateInventoryUI(inventoryItems);
             // Debug.Log($"{item.itemName} has been added to stack, stack now is {inventoryItems.Find(i => i.item.itemName == item.itemName).stackSize}");
         }
@@ -34,7 +28,6 @@ public class Inventory : MonoBehaviour
                 newItemSlot.AddToStack(item.amount);
                 items.Add(item);
                 inventoryItems.Add(newItemSlot);
-                // itemDictionary.Add(item, newItemSlot);
                 inventoryManager.UpdateInventoryUI(inventoryItems);
                 // Debug.Log($"{newItemSlot.item.itemName} has been added to inventory");
             }
@@ -47,8 +40,6 @@ public class Inventory : MonoBehaviour
 
     public void RemoveItem(Item item)
     {
-        // if (itemDictionary.TryGetValue(item, out InventoryItem itemSlot))
-        // itemSlot.RemoveFromStack();
         InventoryItem tempItem = inventoryItems.Find(i => i.item.itemName == item.itemName);
         if (tempItem != null)
         {
@@ -64,7 +55,6 @@ public class Inventory : MonoBehaviour
     public void RemoveItem(WeaponItem weaponItem)
     {
         Debug.Log("Removing weapon item");
-        // InventoryItem itemToRemove = null;
         
         foreach (InventoryItem item in inventoryItems)
         {
@@ -81,8 +71,10 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    // public void EquipWeaponItem(WeaponItem weaponItem)
-    // {
-    //     weapon.SetWeapon(weaponItem.weaponPrefab);
-    // }
+    public void EquipItem(WeaponItem weaponItem)
+    {
+        InventoryItem itemToEquip = new InventoryItem(weaponItem);
+        equipmentItems.Add(itemToEquip);
+        inventoryManager.UpdateEquipmentUI(equipmentItems);
+    }
 }

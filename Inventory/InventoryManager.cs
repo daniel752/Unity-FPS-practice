@@ -7,39 +7,28 @@ public class InventoryManager : MonoBehaviour
 {
     // public static InventoryManager instance;
     public int inventorySize = 20;
+    public int equipmentSize = 8;
     public GameObject slotPrefab;
     public GameObject itemInfoPrefab;
+    public GameObject equipmentPrefab;
+    public GameObject equipmentSlotPrefab;
     public List<InventorySlot> inventorySlots = new List<InventorySlot>();
+    public List<InventorySlot> equipmentSlots = new List<InventorySlot>();
     public float slowTimeEffect = 0f;
     private int normalTime = 1;
-    // public Inventory inventory;
 
     public void Init()
-    {
-        // if (instance == null)
-        // {
-        //     instance = this;
-        // }
-        // else
-        // {
-        //     Destroy(gameObject);
-        // }
-        
+    {   
         for (int i = 0; i < inventorySize; i++)
         {
             // Debug.Log($"Init inventory slot {i}");
             CreateInventorySlot();
         }
+        for (int i = 0; i < equipmentSize; i++)
+        {
+            CreateEquipmentSlot(equipmentPrefab.transform);
+        }
     }
-
-    // private void Start()
-    // {
-    //     for (int i = 0; i < inventorySize; i++)
-    //     {
-    //         Debug.Log($"Init inventory slot {i}");
-    //         CreateInventorySlot();
-    //     }
-    // }
 
     public void CreateInventorySlot()
     {
@@ -47,15 +36,17 @@ public class InventoryManager : MonoBehaviour
         InventorySlot newSlotComponent = newSlot.GetComponent<InventorySlot>();
         newSlotComponent.ClearSlot();
         inventorySlots.Add(newSlotComponent);
-        // newSlotComponent.GetComponent<Image>().enabled = false;
-        // newSlotComponent.GetComponent<TextMeshProUGUI>().enabled = false;
-        // newSlotComponent.GetComponent<TextMeshProUGUI>().enabled = false;
+    }
+    public void CreateEquipmentSlot(Transform transform)
+    {
+        GameObject newSlot = Instantiate(equipmentSlotPrefab, transform);
+        InventorySlot newSlotComponent = newSlot.GetComponent<InventorySlot>();
+        newSlotComponent.ClearSlot();
+        equipmentSlots.Add(newSlotComponent);
     }
 
     public void OpenInventory()
     {
-        // Transform mainCamera = GameObject.FindWithTag("MainCamera").gameObject.transform;
-        // mainCamera.SetParent(GameObject.FindWithTag("InventoryUI").transform);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         gameObject.transform.parent.gameObject.SetActive(true);
@@ -63,14 +54,9 @@ public class InventoryManager : MonoBehaviour
     }
     public void CloseInventory()
     {
-        // Transform mainCamera = GameObject.FindWithTag("MainCamera").gameObject.transform;
-        // mainCamera.SetParent(GameObject.FindWithTag("Player").transform);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         gameObject.transform.parent.gameObject.SetActive(false);
-        // GameObject inventoryUI = GameObject.Find("InventoryUI");
-        // inventoryUI.SetActive(false);
-        // gameObject.SetActive(false);
         Time.timeScale = normalTime;
     }
 
@@ -90,6 +76,24 @@ public class InventoryManager : MonoBehaviour
             {
                 inventorySlots[i].UnSetSlotItem();
                 inventorySlots[i].ClearSlot();
+            }
+        }
+    }
+    public void UpdateEquipmentUI(List<InventoryItem> equipmentItems)
+    {
+        for (int i = 0; i < equipmentSlots.Count; i++)
+        {
+            Debug.Log($"number of equipment items: {equipmentItems.Count}");
+            if (i < equipmentItems.Count)
+            {
+                Debug.Log($"item props: icon - {equipmentItems[i].weaponItem.icon}");
+                equipmentSlots[i].SetSlotItem(equipmentItems[i]);
+                equipmentSlots[i].DrawSlot(equipmentItems[i]);
+            }
+            else
+            {
+                equipmentSlots[i].UnSetSlotItem();
+                equipmentSlots[i].ClearSlot();
             }
         }
     }
