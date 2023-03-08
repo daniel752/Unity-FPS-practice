@@ -7,13 +7,9 @@ public class InventoryManager : MonoBehaviour
 {
     // public static InventoryManager instance;
     public int inventorySize = 20;
-    public int equipmentSize = 8;
     public GameObject slotPrefab;
     public GameObject itemInfoPrefab;
-    public GameObject equipmentPrefab;
-    public GameObject equipmentSlotPrefab;
     public List<InventorySlot> inventorySlots = new List<InventorySlot>();
-    public List<InventorySlot> equipmentSlots = new List<InventorySlot>();
     public float slowTimeEffect = 0f;
     private int normalTime = 1;
 
@@ -24,10 +20,6 @@ public class InventoryManager : MonoBehaviour
             // Debug.Log($"Init inventory slot {i}");
             CreateInventorySlot();
         }
-        for (int i = 0; i < equipmentSize; i++)
-        {
-            CreateEquipmentSlot(equipmentPrefab.transform);
-        }
     }
 
     public void CreateInventorySlot()
@@ -36,13 +28,6 @@ public class InventoryManager : MonoBehaviour
         InventorySlot newSlotComponent = newSlot.GetComponent<InventorySlot>();
         newSlotComponent.ClearSlot();
         inventorySlots.Add(newSlotComponent);
-    }
-    public void CreateEquipmentSlot(Transform transform)
-    {
-        GameObject newSlot = Instantiate(equipmentSlotPrefab, transform);
-        InventorySlot newSlotComponent = newSlot.GetComponent<InventorySlot>();
-        newSlotComponent.ClearSlot();
-        equipmentSlots.Add(newSlotComponent);
     }
 
     public void OpenInventory()
@@ -76,24 +61,6 @@ public class InventoryManager : MonoBehaviour
             {
                 inventorySlots[i].UnSetSlotItem();
                 inventorySlots[i].ClearSlot();
-            }
-        }
-    }
-    public void UpdateEquipmentUI(List<InventoryItem> equipmentItems)
-    {
-        for (int i = 0; i < equipmentSlots.Count; i++)
-        {
-            Debug.Log($"number of equipment items: {equipmentItems.Count}");
-            if (i < equipmentItems.Count)
-            {
-                Debug.Log($"item props: icon - {equipmentItems[i].weaponItem.icon}");
-                equipmentSlots[i].SetSlotItem(equipmentItems[i]);
-                equipmentSlots[i].DrawSlot(equipmentItems[i]);
-            }
-            else
-            {
-                equipmentSlots[i].UnSetSlotItem();
-                equipmentSlots[i].ClearSlot();
             }
         }
     }

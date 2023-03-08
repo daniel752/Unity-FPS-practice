@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public float projectileSpeed = 100f;
+    public float projectileSpeed = 500f;
     private float damage;
     public float range = 100f;
     private Vector3 initialPosition;
@@ -12,15 +12,13 @@ public class Projectile : MonoBehaviour
 
     void Awake()
     {
-        // Debug.Log("Fired projectile");
         initialPosition = transform.position;
+        Debug.DrawRay(initialPosition, Vector3.up * 0.5f, Color.red, 5.0f);
         Rigidbody rb = GetComponent<Rigidbody>();
         Camera mainCamera = Camera.main;
         Vector3 centerOfScreen = new Vector3(mainCamera.pixelWidth / 2.0f, mainCamera.pixelHeight / 2.0f, 0);
         Vector3 direction = mainCamera.ScreenToWorldPoint(centerOfScreen) - transform.position;
         rb.AddRelativeForce(Vector3.forward * projectileSpeed,ForceMode.Impulse);
-        // rb.AddForce(direction.normalized * projectileSpeed, ForceMode.Impulse);
-        // Debug.Log("Force: " + direction.normalized * projectileSpeed);
     }
 
     void Update()

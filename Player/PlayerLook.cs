@@ -8,8 +8,8 @@ public class PlayerLook : MonoBehaviour
     private float xRotation = 0f;
     [SerializeField] private float xSensitivity = 30f;
     [SerializeField] private float ySensitivity = 30f;
-    [SerializeField] private float minimumLookAngle = -80f;
-    [SerializeField] private float maximumLookAngle = 80f;
+    [SerializeField] private float minimumLookAngle = -60f;
+    [SerializeField] private float maximumLookAngle = 60f;
     
     public void ProcessLook(Vector2 input)
     {

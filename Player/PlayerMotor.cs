@@ -27,6 +27,8 @@ public class PlayerMotor : MonoBehaviour
         firing = false;
         crouching = false;
         sprinting = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     // Update is called once per frame

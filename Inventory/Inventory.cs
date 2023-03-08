@@ -5,18 +5,22 @@ public class Inventory : MonoBehaviour
 {
     public int inventorySize = 20;
     public List<InventoryItem> inventoryItems = new List<InventoryItem>();
-    public List<Item> items = new List<Item>();
-    public GameObject weaponSlot;
-    List<InventoryItem> equipmentItems = new List<InventoryItem>();
-    [SerializeField] private InventoryManager inventoryManager;
+    public List<IItem> items = new List<IItem>();
+    // List<InventoryItem> equipmentItems = new List<InventoryItem>();
+    [SerializeField] InventoryManager inventoryManager;
+    [SerializeField] Equipment equipment;
+    private void Awake() 
+    {
+        equipment = GetComponent<Equipment>();    
+    }
 
-    public void AddItem(Item item)
+    public void AddItem(IItem itemToAdd)
     {   
-        if (item.stackable && items.Contains(item))
+        if (itemToAdd.stackable && items.Contains(itemToAdd))
         {
-            InventoryItem tempItem = inventoryItems.Find(i => i.item.itemName == item.itemName); 
-            tempItem.AddToStack(item.amount);
-            items.Add(item);
+            InventoryItem newItemSlot = inventoryItems.Find(i => i.item.itemName == itemToAdd.itemName); 
+            newItemSlot.AddToStack(itemToAdd.amount);
+            items.Add(itemToAdd);
             inventoryManager.UpdateInventoryUI(inventoryItems);
             // Debug.Log($"{item.itemName} has been added to stack, stack now is {inventoryItems.Find(i => i.item.itemName == item.itemName).stackSize}");
         }
@@ -24,9 +28,9 @@ public class Inventory : MonoBehaviour
         {
             if (inventoryItems.Count < inventorySize)
             {
-                InventoryItem newItemSlot = new InventoryItem(item);
-                newItemSlot.AddToStack(item.amount);
-                items.Add(item);
+                InventoryItem newItemSlot = new InventoryItem(itemToAdd);
+                newItemSlot.AddToStack(itemToAdd.amount);
+                items.Add(itemToAdd);
                 inventoryItems.Add(newItemSlot);
                 inventoryManager.UpdateInventoryUI(inventoryItems);
                 // Debug.Log($"{newItemSlot.item.itemName} has been added to inventory");
@@ -38,16 +42,16 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void RemoveItem(Item item)
+    public void RemoveItem(IItem itemToRemove)
     {
-        InventoryItem tempItem = inventoryItems.Find(i => i.item.itemName == item.itemName);
-        if (tempItem != null)
+        InventoryItem itemSlotToRemove = inventoryItems.Find(i => i.item.itemName == itemToRemove.itemName);
+        if (itemSlotToRemove != null)
         {
-            tempItem.RemoveFromStack();
-            if (tempItem.stackSize == 0)
+            itemSlotToRemove.RemoveFromStack();
+            if (itemSlotToRemove.stackSize == 0)
             {
-                inventoryItems.Remove(tempItem);
-                items.Remove(tempItem.item);
+                inventoryItems.Remove(itemSlotToRemove);
+                items.Remove(itemSlotToRemove.item);
                 inventoryManager.UpdateInventoryUI(inventoryItems);
             }
         }
@@ -70,11 +74,8 @@ public class Inventory : MonoBehaviour
             }
         }
     }
-
-    public void EquipItem(WeaponItem weaponItem)
+    public Equipment GetEquipment()
     {
-        InventoryItem itemToEquip = new InventoryItem(weaponItem);
-        equipmentItems.Add(itemToEquip);
-        inventoryManager.UpdateEquipmentUI(equipmentItems);
+        return equipment;
     }
 }

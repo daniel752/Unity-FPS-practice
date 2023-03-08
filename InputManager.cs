@@ -24,6 +24,7 @@ public class InputManager : MonoBehaviour
         inventoryUI = GameObject.FindWithTag("InventoryUI");
         inventoryUI.SetActive(false);
         inventoryManager.Init();
+        inventoryManager.GetComponent<EquipmentManager>().Init();
         // InventoryManager.instance.gameObject.SetActive(false);
         playerInput = new PlayerInput();
         onFoot = playerInput.OnFoot;

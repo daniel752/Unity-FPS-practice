@@ -8,7 +8,8 @@ public class Weapon : MonoBehaviour
     [SerializeField] GameObject weaponPrefab;
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] WeaponItem weaponItem;
-    Transform spawnPosition;
+    [SerializeField] Transform spawnPosition;
+    WeaponAim weaponAim;
     int fireRate;
     int damage;
     float timeBetweenShots;
@@ -19,13 +20,18 @@ public class Weapon : MonoBehaviour
     {
         // Debug.Log($"weapon damage:{weaponItem.damage}, weapon fire rate:{weaponItem.fireRate}");
         SetWeaponStats();
-        SetSpawnPosition();
+        SetWeaponAim();
+        // SetSpawnPosition();
     }
 
-    private void SetSpawnPosition()
+    public void SetWeaponAim()
     {
-        spawnPosition = transform.Find("WeaponTip").transform;
+        weaponAim = transform.parent.GetComponent<WeaponAim>();
     }
+    // private void SetSpawnPosition()
+    // {
+    //     spawnPosition = transform.Find("WeaponTip").transform;
+    // }
 
     // private void Start()
     // {
@@ -40,7 +46,7 @@ public class Weapon : MonoBehaviour
         fireRate = weaponItem.fireRate;
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         timeBetweenShots += Time.deltaTime;
 
@@ -55,19 +61,35 @@ public class Weapon : MonoBehaviour
         // Debug.Log($"time:{timeBetweenShots} >=? {1f / fireRate}");
         if(firing && timeBetweenShots >= 1f / fireRate)
         {
-            // Debug.Log("Bang bang");
-            //Getting crosshair position
-            Vector3 spawnDirection = GetSpawnDirection();
-            //Shooting bullets
-            Projectile projectileObj = Instantiate(projectilePrefab,spawnPosition.position,Quaternion.LookRotation(spawnDirection)).GetComponent<Projectile>();
+            // Vector3 spawnPosition = weaponAim.transform.position;
+            Vector3 spawnDirection = weaponAim.transform.forward;
+
+            // Instantiate the projectile and set its position and rotation
+            Projectile projectileObj = Instantiate(projectilePrefab, spawnPosition.position, Quaternion.LookRotation(spawnDirection)).GetComponent<Projectile>();
+
+            // Set the damage of the projectile
             projectileObj.SetDamage(damage);
 
-            //Muzzle flash effect for gun
-            GameObject newMuzzleFlash = Instantiate(muzzleFlash,spawnPosition.position,spawnPosition.rotation);
-            newMuzzleFlash.transform.parent = spawnPosition;
-            // newMuzzleFlash.transform.parent = GameObject.FindWithTag("Player").transform.Find("WeaponTip");
+            // Instantiate the muzzle flash effect for the gun
+            GameObject newMuzzleFlash = Instantiate(muzzleFlash, spawnPosition.position, Quaternion.LookRotation(spawnDirection));
+            newMuzzleFlash.transform.parent = weaponAim.transform;
 
+            // Reset the time between shots
             timeBetweenShots = 0;
+
+            // // Debug.Log("Bang bang");
+            // //Getting crosshair position
+            // Vector3 spawnDirection = GetSpawnDirection();
+            // //Shooting bullets
+            // Projectile projectileObj = Instantiate(projectilePrefab,spawnPosition.position,Quaternion.LookRotation(spawnDirection)).GetComponent<Projectile>();
+            // projectileObj.SetDamage(damage);
+
+            // //Muzzle flash effect for gun
+            // GameObject newMuzzleFlash = Instantiate(muzzleFlash,spawnPosition.position,spawnPosition.rotation);
+            // newMuzzleFlash.transform.parent = spawnPosition;
+            // // newMuzzleFlash.transform.parent = GameObject.FindWithTag("Player").transform.Find("WeaponTip");
+
+            // timeBetweenShots = 0;
         }
     }
 
@@ -79,7 +101,12 @@ public class Weapon : MonoBehaviour
         RaycastHit raycastHit;
 
         if (Physics.Raycast(ray,out raycastHit))
-            spawnDirection = (raycastHit.point - spawnPosition.position).normalized;
+        {
+            spawnDirection = raycastHit.point - transform.position;
+            spawnDirection.y = 0;
+            spawnDirection.Normalize();
+            // spawnDirection = (raycastHit.point - spawnPosition.position).normalized;
+        }
         else
             spawnDirection = spawnPosition.forward;
 

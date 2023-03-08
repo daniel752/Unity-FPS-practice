@@ -4,11 +4,30 @@ using UnityEngine;
 
 public class WeaponAim : MonoBehaviour
 {
-    [SerializeField] private Transform cameraRotation;
+    [SerializeField] Camera playerCamera;
+    [SerializeField] Transform weaponTransform;
+    [SerializeField] GameObject reticle;
+    private float range = 30;
 
-    // Update is called once per frame
-    void LateUpdate()
+    private void Awake() 
     {
-        transform.rotation = cameraRotation.rotation;
+        playerCamera = Camera.main;
+        weaponTransform = transform;    
+    }
+
+    private void Update() 
+    {
+        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        Debug.DrawRay(ray.origin,ray.direction * range);
+        weaponTransform.LookAt(ray.GetPoint(range));
+        // RaycastHit hit;
+        // if (Physics.Raycast(ray, out hit))
+        // {
+        //     weaponTransform.LookAt(hit.point);
+        // }
+        // else
+        // {
+        //     weaponTransform.LookAt(ray.direction * range,);
+        // }
     }
 }

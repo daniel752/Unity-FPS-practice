@@ -3,19 +3,22 @@
 [Serializable]
 public class InventoryItem
 {
-    public Item item;
+    public IItem item;
+    // public Item item;
     public WeaponItem weaponItem;
     public int stackSize;
+    public bool equipped;
 
-    public InventoryItem(Item item)
+    public InventoryItem(IItem item)
     {
         this.item = item;
+        equipped = false;
         // stackSize = 1;
     }
-    public InventoryItem(WeaponItem weaponItem)
-    {
-        this.weaponItem = weaponItem;
-    }
+    // public InventoryItem(WeaponItem weaponItem)
+    // {
+    //     this.weaponItem = weaponItem;
+    // }
 
     public void AddToStack(int amount)
     {
