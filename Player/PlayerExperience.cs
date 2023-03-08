@@ -9,6 +9,8 @@ public class PlayerExperience : MonoBehaviour
     [SerializeField] Image frontXpBar;
     [SerializeField] Image backXpBar;
     [SerializeField] TextMeshProUGUI levelText;
+    [SerializeField] GameObject levelUpVfx;
+    [SerializeField] AudioSource levelUpSfx;
     private int exp = 0;
     private int expLevelCap = 10;
     private int level = 1;
@@ -34,6 +36,8 @@ public class PlayerExperience : MonoBehaviour
         expLevelCap += 10;
         level++;
         levelText.text = level.ToString();
+        levelUpSfx.Play();
+        Instantiate(levelUpVfx,transform);
         Debug.Log($"level: {level}");
     }
     private void UpdateExpUI()
