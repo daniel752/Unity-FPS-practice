@@ -9,6 +9,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] WeaponItem weaponItem;
     [SerializeField] Transform spawnPosition;
+    AudioSource fireShotSound;
     WeaponAim weaponAim;
     int fireRate;
     int damage;
@@ -21,6 +22,7 @@ public class Weapon : MonoBehaviour
         // Debug.Log($"weapon damage:{weaponItem.damage}, weapon fire rate:{weaponItem.fireRate}");
         SetWeaponStats();
         SetWeaponAim();
+        fireShotSound = GetComponent<AudioSource>();
         // SetSpawnPosition();
     }
 
@@ -57,39 +59,20 @@ public class Weapon : MonoBehaviour
     }
     public void Fire()
     {
-        // Debug.Log($"fire rate:{fireRate}");
-        // Debug.Log($"time:{timeBetweenShots} >=? {1f / fireRate}");
         if(firing && timeBetweenShots >= 1f / fireRate)
         {
-            // Vector3 spawnPosition = weaponAim.transform.position;
             Vector3 spawnDirection = weaponAim.transform.forward;
-
             // Instantiate the projectile and set its position and rotation
             Projectile projectileObj = Instantiate(projectilePrefab, spawnPosition.position, Quaternion.LookRotation(spawnDirection)).GetComponent<Projectile>();
-
+            //Play fire shot sound effect
+            fireShotSound.Play();
             // Set the damage of the projectile
             projectileObj.SetDamage(damage);
-
             // Instantiate the muzzle flash effect for the gun
             GameObject newMuzzleFlash = Instantiate(muzzleFlash, spawnPosition.position, Quaternion.LookRotation(spawnDirection));
             newMuzzleFlash.transform.parent = weaponAim.transform;
-
             // Reset the time between shots
             timeBetweenShots = 0;
-
-            // // Debug.Log("Bang bang");
-            // //Getting crosshair position
-            // Vector3 spawnDirection = GetSpawnDirection();
-            // //Shooting bullets
-            // Projectile projectileObj = Instantiate(projectilePrefab,spawnPosition.position,Quaternion.LookRotation(spawnDirection)).GetComponent<Projectile>();
-            // projectileObj.SetDamage(damage);
-
-            // //Muzzle flash effect for gun
-            // GameObject newMuzzleFlash = Instantiate(muzzleFlash,spawnPosition.position,spawnPosition.rotation);
-            // newMuzzleFlash.transform.parent = spawnPosition;
-            // // newMuzzleFlash.transform.parent = GameObject.FindWithTag("Player").transform.Find("WeaponTip");
-
-            // timeBetweenShots = 0;
         }
     }
 

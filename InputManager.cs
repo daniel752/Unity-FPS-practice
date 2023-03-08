@@ -38,6 +38,16 @@ public class InputManager : MonoBehaviour
         // inventoryManager.gameObject.GetComponent<Image>().enabled = false;
         // inventoryManager.gameObject.SetActive(false);
 
+        onFoot.Movement.performed += ctx =>
+        {
+            motor.walking = true;
+            // motor.Walk(ctx.ReadValue<Vector2>());
+        };
+        onFoot.Movement.canceled += ctx =>
+        {
+            motor.walking = false;
+            // motor.Walk(Vector2.zero);
+        };
         onFoot.Jump.performed += ctx =>
         {
             if (!inventoryOpen)

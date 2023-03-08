@@ -10,16 +10,14 @@ public class PlayerExperience : MonoBehaviour
     [SerializeField] Image backXpBar;
     [SerializeField] TextMeshProUGUI levelText;
     [SerializeField] GameObject levelUpVfx;
-    [SerializeField] AudioSource levelUpSfx;
+    AudioSource levelUpSfx;
     private int exp = 0;
     private int expLevelCap = 10;
     private int level = 1;
 
     private void Awake() 
     {
-        // frontXpBar = GameObject.Find("ExpFrontBar").GetComponent<Image>();
-        // backXpBar = GameObject.Find("ExpBackBar").GetComponent<Image>();
-        // levelText = GameObject.Find("Level").GetComponent<TextMeshProUGUI>();
+        levelUpSfx = GetComponent<AudioSource>();
         levelText.text = level.ToString();
     }
     public void GainExp(int xp)

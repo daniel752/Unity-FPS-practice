@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMotor : MonoBehaviour
 {
@@ -16,17 +17,22 @@ public class PlayerMotor : MonoBehaviour
     [SerializeField] private float gravity = -9.8f;
     [SerializeField] private float jumpHeight = 3f;
     [SerializeField] private float minimumDownForce = -2f;
-
     [SerializeField] private Weapon weapon;
     public bool firing;
+    AudioSource walkingSfx;
+    public bool walking;
+    AudioSource jumpSfx;
 
     // Start is called before the first frame update
     void Awake()
     {
         controller = GetComponent<CharacterController>();
+        walkingSfx = GetComponents<AudioSource>()[1];
+        jumpSfx = GetComponents<AudioSource>()[2];
         firing = false;
         crouching = false;
         sprinting = false;
+        walking = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -35,6 +41,19 @@ public class PlayerMotor : MonoBehaviour
     void Update()
     {
         grounded = controller.isGrounded;
+        if (walking)
+        {
+            if (!walkingSfx.isPlaying)
+            {
+                Debug.Log("play walk effect");
+                walkingSfx.Play();
+            }
+            // else if (walkingSfx.isPlaying)
+            // {
+            //     Debug.Log("stop walk effect");
+            //     walkingSfx.Stop();
+            // }
+        }
 
         if(lerpCrouch)
         {
@@ -72,6 +91,7 @@ public class PlayerMotor : MonoBehaviour
         if (grounded)
         {
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.5f * gravity);
+            jumpSfx.Play();
         }
     }
     public void Crouch()
@@ -114,4 +134,21 @@ public class PlayerMotor : MonoBehaviour
     {
         WeaponManager.OnWeaponEquipped -= OnWeaponEquipped;
     }
+
+    // public void Walk(Vector2 movement)
+    // {
+    //     if (movement.magnitude > 0.01f)
+    //     {
+    //         if (!walkingSfx.isPlaying)
+    //         {
+    //             Debug.Log("play walk effect");
+    //             walkingSfx.Play();
+    //         }
+    //         else if (walkingSfx.isPlaying)
+    //         {
+    //             Debug.Log("stop walk effect");
+    //             walkingSfx.Stop();
+    //         }
+    //     }
+    // }
 }
