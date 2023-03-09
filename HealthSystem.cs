@@ -18,8 +18,13 @@ public class HealthSystem : MonoBehaviour
     {
         health -= damage;
     }
-    public virtual void RestoreDamage(float heal)
+    public virtual void RestoreHealth(float heal)
     {
         health += heal;
+    }
+
+    public float GetHealth()
+    {
+        return health;
     }
 }

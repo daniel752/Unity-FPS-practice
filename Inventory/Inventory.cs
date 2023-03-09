@@ -5,7 +5,7 @@ public class Inventory : MonoBehaviour
 {
     public int inventorySize = 20;
     public List<InventoryItem> inventoryItems = new List<InventoryItem>();
-    public List<IItem> items = new List<IItem>();
+    public List<Item> items = new List<Item>();
     // List<InventoryItem> equipmentItems = new List<InventoryItem>();
     [SerializeField] InventoryManager inventoryManager;
     [SerializeField] Equipment equipment;
@@ -14,9 +14,9 @@ public class Inventory : MonoBehaviour
         equipment = GetComponent<Equipment>();    
     }
 
-    public void AddItems(List<IItem> itemsToAdd)
+    public void AddItems(List<Item> itemsToAdd)
     {
-        foreach (IItem itemToAdd in itemsToAdd)
+        foreach (Item itemToAdd in itemsToAdd)
         {
             if (itemToAdd.stackable && items.Contains(itemToAdd))
             {
@@ -40,7 +40,7 @@ public class Inventory : MonoBehaviour
             }
         }
     }
-    public void AddItem(IItem itemToAdd)
+    public void AddItem(Item itemToAdd)
     {   
         if (itemToAdd.stackable && items.Contains(itemToAdd))
         {
@@ -68,7 +68,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void RemoveItem(IItem itemToRemove)
+    public void RemoveItem(Item itemToRemove)
     {
         InventoryItem itemSlotToRemove = inventoryItems.Find(i => i.item.itemName == itemToRemove.itemName);
         if (itemSlotToRemove != null)

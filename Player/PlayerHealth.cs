@@ -75,7 +75,7 @@ public class PlayerHealth : HealthSystem
         overlay.color = new Color(overlay.color.r,overlay.color.g,overlay.color.b,1);
 
     }
-    public override void RestoreDamage(float heal)
+    public override void RestoreHealth(float heal)
     {
         health += heal;
         lerpTimer = 0f;

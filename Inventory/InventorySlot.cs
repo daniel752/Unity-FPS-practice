@@ -54,22 +54,26 @@ public class InventorySlot : MonoBehaviour
     {
         if (Mouse.current.clickCount.ReadValue() == 2)
         {
-            if (inventoryItem.item.itemType == ItemType.Consumable)
+            Inventory inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
+            
+            if (inventoryItem.item is ConsumableItem)
             {
                 // Debug.Log("item clicked");
-                inventoryItem.item.Use();
+                ConsumableItem consumableItem = (ConsumableItem)inventoryItem.item;
+                HealthSystem playerHealth = GameObject.FindWithTag("Player").GetComponent<HealthSystem>();
+                consumableItem.Use(playerHealth);
+                inventory.RemoveItem(consumableItem);
             }
-            else if (inventoryItem.item.itemType == ItemType.Weapon)
+            else if (inventoryItem.item is WeaponItem)
             {
                 // Debug.Log("equip item");
-                WeaponItem weaponItem = inventoryItem.item as WeaponItem;
+                WeaponItem weaponItem = (WeaponItem)inventoryItem.item;
                 WeaponManager weaponManager = GameObject.FindWithTag("Player").GetComponent<WeaponManager>();
                 weaponManager.EquipWeapon(weaponItem);
                 if (!inventoryItem.equipped)
                 {
                     // Debug.Log("moving item to equipment");
                     // inventoryItem.equipped = true;
-                    Inventory inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
                     inventory.GetEquipment().EquipItem(inventoryItem);
                     inventory.RemoveItem(weaponItem);
                     ClearSlot();

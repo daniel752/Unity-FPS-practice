@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Equipment : MonoBehaviour
 {
-    [SerializeField] List<IItem> items = new List<IItem>();
+    [SerializeField] List<Item> items = new List<Item>();
     [SerializeField] List<InventoryItem> equipmentItems = new List<InventoryItem>();
     [SerializeField] EquipmentManager equipmentManager;
 

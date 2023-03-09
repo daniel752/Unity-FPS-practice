@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Pickable : Interactable
 {
-    [SerializeField] List<IItem> items = new List<IItem>();
+    [SerializeField] List<Item> items = new List<Item>();
     AudioSource pickSfx;
 
     private void Awake() 
     {
+        pickSfx = GetComponentInChildren<AudioSource>();
+
+        //Inactivate all objects stored in this game object
         GameObject itemsObj = transform.Find("Items").gameObject;
-        pickSfx = GetComponentInChildren<AudioSource>();    
     }
 
     protected override void Interact()

@@ -3,13 +3,13 @@
 [Serializable]
 public class InventoryItem
 {
-    public IItem item;
+    public Item item;
     // public Item item;
     public WeaponItem weaponItem;
     public int stackSize;
     public bool equipped;
 
-    public InventoryItem(IItem item)
+    public InventoryItem(Item item)
     {
         this.item = item;
         equipped = false;
