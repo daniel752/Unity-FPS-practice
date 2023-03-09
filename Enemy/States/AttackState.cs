@@ -15,14 +15,14 @@ public class AttackState : BaseState
     {
         if (enemy.TargetInAttackRange())
         {
-            Debug.Log("Target " + enemy.GetTarget().name + " in range");
+            // Debug.Log("Target " + enemy.GetTarget().name + " in range");
             time += Time.deltaTime;
             if (time >= enemy.GetTimeBetweenAttacks())
                 Attack();
         }
         else
         {
-            Debug.Log("Target " + enemy.GetTarget().name + " out of range");
+            // Debug.Log("Target " + enemy.GetTarget().name + " out of range");
             stateMachine.ChangeState(stateMachine.alertState);
         }
     }

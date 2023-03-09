@@ -45,7 +45,7 @@ public class PlayerMotor : MonoBehaviour
         {
             if (!walkingSfx.isPlaying)
             {
-                Debug.Log("play walk effect");
+                // Debug.Log("play walk effect");
                 walkingSfx.Play();
             }
             // else if (walkingSfx.isPlaying)
@@ -110,7 +110,7 @@ public class PlayerMotor : MonoBehaviour
     }
     public void Fire()
     {
-        Debug.Log("PlayerMotor fire");
+        // Debug.Log("PlayerMotor fire");
         // firing = true;
         weapon.firing = true;
         weapon.Fire();

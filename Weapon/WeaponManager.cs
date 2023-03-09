@@ -16,11 +16,11 @@ public class WeaponManager : MonoBehaviour
         this.weaponItem = weaponItem;
         if (currentWeapon != null)
         {
-            Debug.Log($"Destroying {currentWeapon}");
+            // Debug.Log($"Destroying {currentWeapon}");
             Destroy(currentWeapon);
         }
 
-        Debug.Log($"Creating new weapon {weaponItem.itemName} with dmg {weaponItem.damage} and fire rate {weaponItem.fireRate}");
+        // Debug.Log($"Creating new weapon {weaponItem.itemName} with dmg {weaponItem.damage} and fire rate {weaponItem.fireRate}");
         currentWeapon = Instantiate(weaponItem.weaponPrefab,weaponSlot);
         Weapon weapon = currentWeapon.GetComponent<Weapon>();
         weapon.SetWeapon(weaponItem);

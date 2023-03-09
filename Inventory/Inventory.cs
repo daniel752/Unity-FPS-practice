@@ -14,6 +14,32 @@ public class Inventory : MonoBehaviour
         equipment = GetComponent<Equipment>();    
     }
 
+    public void AddItems(List<IItem> itemsToAdd)
+    {
+        foreach (IItem itemToAdd in itemsToAdd)
+        {
+            if (itemToAdd.stackable && items.Contains(itemToAdd))
+            {
+                InventoryItem newItemSlot = inventoryItems.Find(i => i.item.itemName == itemToAdd.itemName); 
+                newItemSlot.AddToStack(itemToAdd.amount);
+                items.Add(itemToAdd);
+                inventoryManager.UpdateInventoryUI(inventoryItems);
+                // Debug.Log($"{item.itemName} has been added to stack, stack now is {inventoryItems.Find(i => i.item.itemName == item.itemName).stackSize}");
+            }
+            else
+            {
+                if (inventoryItems.Count < inventorySize)
+                {
+                    InventoryItem newItemSlot = new InventoryItem(itemToAdd);
+                    newItemSlot.AddToStack(itemToAdd.amount);
+                    items.Add(itemToAdd);
+                    inventoryItems.Add(newItemSlot);
+                    inventoryManager.UpdateInventoryUI(inventoryItems);
+                    // Debug.Log($"{newItemSlot.item.itemName} has been added to inventory");
+                }
+            }
+        }
+    }
     public void AddItem(IItem itemToAdd)
     {   
         if (itemToAdd.stackable && items.Contains(itemToAdd))
@@ -37,7 +63,7 @@ public class Inventory : MonoBehaviour
             }
             else
             {
-                Debug.Log("Inventory is full");
+                // Debug.Log("Inventory is full");
             }
         }
     }
@@ -58,7 +84,7 @@ public class Inventory : MonoBehaviour
     }
     public void RemoveItem(WeaponItem weaponItem)
     {
-        Debug.Log("Removing weapon item");
+        // Debug.Log("Removing weapon item");
         
         foreach (InventoryItem item in inventoryItems)
         {

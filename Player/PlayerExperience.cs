@@ -22,7 +22,7 @@ public class PlayerExperience : MonoBehaviour
     }
     public void GainExp(int xp)
     {
-        Debug.Log($"adding to exp {xp} and is now {exp + xp}");
+        // Debug.Log($"adding to exp {xp} and is now {exp + xp}");
         exp += xp;
         if (exp >= expLevelCap)
             LevelUp();
@@ -36,13 +36,13 @@ public class PlayerExperience : MonoBehaviour
         levelText.text = level.ToString();
         levelUpSfx.Play();
         Instantiate(levelUpVfx,transform);
-        Debug.Log($"level: {level}");
+        // Debug.Log($"level: {level}");
     }
     private void UpdateExpUI()
     {
         float exp = this.exp;
         float expLevelCap = this.expLevelCap;
-        Debug.Log($"fill amount is {exp / expLevelCap}");
+        // Debug.Log($"fill amount is {exp / expLevelCap}");
         frontXpBar.fillAmount = exp / expLevelCap;
     }
 }

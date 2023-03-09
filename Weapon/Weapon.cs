@@ -16,31 +16,19 @@ public class Weapon : MonoBehaviour
     float timeBetweenShots;
     public GameObject muzzleFlash;
     public bool firing;
-    // PlayerMotor playerMotor;
+    
     public void Init()
     {
-        // Debug.Log($"weapon damage:{weaponItem.damage}, weapon fire rate:{weaponItem.fireRate}");
         SetWeaponStats();
         SetWeaponAim();
         fireShotSound = GetComponent<AudioSource>();
-        // SetSpawnPosition();
+        Debug.Log($"dmg:{damage}, fire rate:{fireRate}");
     }
 
     public void SetWeaponAim()
     {
         weaponAim = transform.parent.GetComponent<WeaponAim>();
     }
-    // private void SetSpawnPosition()
-    // {
-    //     spawnPosition = transform.Find("WeaponTip").transform;
-    // }
-
-    // private void Start()
-    // {
-    //     // playerMotor = GameObject.FindWithTag("Player").GetComponent<PlayerMotor>();
-    //     Debug.Log($"weapon damage:{weaponItem.damage}, weapon fire rate:{weaponItem.fireRate}");
-    //     SetWeaponStats();
-    // }
 
     private void SetWeaponStats()
     {

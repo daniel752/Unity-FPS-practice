@@ -53,7 +53,7 @@ public class Enemy : MonoBehaviour
     }
     public void Die()
     {
-        Debug.Log($"{this} died");
+        // Debug.Log($"{this} died");
         playerExperience.GainExp(10);
     }
     public void SetTarget(GameObject target)

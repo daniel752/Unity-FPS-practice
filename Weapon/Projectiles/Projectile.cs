@@ -31,8 +31,9 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if(other.gameObject.name == "Enemy")
+        if(other.gameObject.tag == "Enemy")
         {
+            Debug.Log($"{this} collided with enemy and did damage of {damage}");
             GameObject enemy = other.gameObject;
         }
 

@@ -20,7 +20,7 @@ public class PatrolState : BaseState
         {
             if (hit.CompareTag("Player"))
             {
-                Debug.Log("Colliding with " + hit.gameObject.name);
+                // Debug.Log("Colliding with " + hit.gameObject.name);
                 enemy.SetTarget(hit.gameObject);
                 stateMachine.ChangeState(stateMachine.alertState);
             }

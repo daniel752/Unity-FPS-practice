@@ -15,4 +15,9 @@ public class ItemPickup : Interactable
         // Debug.Log("Picking up " + item.name);
         Destroy(gameObject);
     }
+
+    public Item GetItem()
+    {
+        return item;
+    }
 }

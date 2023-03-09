@@ -18,7 +18,7 @@ public class InventorySlot : MonoBehaviour
             icon.sprite = item.item.icon;
             icon.enabled = true;
             itemName.text = item.item.itemName;
-            if (item.stackSize == 1)
+            if (item.stackSize <= 1)
                 stackSizeText.text = "";
             else
                 stackSizeText.text = item.stackSize.ToString();
@@ -56,18 +56,18 @@ public class InventorySlot : MonoBehaviour
         {
             if (inventoryItem.item.itemType == ItemType.Consumable)
             {
-                Debug.Log("item clicked");
+                // Debug.Log("item clicked");
                 inventoryItem.item.Use();
             }
             else if (inventoryItem.item.itemType == ItemType.Weapon)
             {
-                Debug.Log("equip item");
+                // Debug.Log("equip item");
                 WeaponItem weaponItem = inventoryItem.item as WeaponItem;
                 WeaponManager weaponManager = GameObject.FindWithTag("Player").GetComponent<WeaponManager>();
                 weaponManager.EquipWeapon(weaponItem);
                 if (!inventoryItem.equipped)
                 {
-                    Debug.Log("moving item to equipment");
+                    // Debug.Log("moving item to equipment");
                     // inventoryItem.equipped = true;
                     Inventory inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
                     inventory.GetEquipment().EquipItem(inventoryItem);
@@ -81,7 +81,7 @@ public class InventorySlot : MonoBehaviour
     {
         if (inventoryItem.weaponItem != null)
         {
-            Debug.Log($"Mouse over slot {inventoryItem.weaponItem.itemName}");
+            // Debug.Log($"Mouse over slot {inventoryItem.weaponItem.itemName}");
             GameObject itemInfoPanel = GameObject.FindWithTag("ItemInfoPanel");
             Transform itemName = itemInfoPanel.transform.Find("ItemName");
             Transform itemDescription = itemInfoPanel.transform.Find("ItemDescription");
@@ -90,7 +90,7 @@ public class InventorySlot : MonoBehaviour
         }
         else
         {
-            Debug.Log($"Mouse over slot {inventoryItem.item.itemName}");
+            // Debug.Log($"Mouse over slot {inventoryItem.item.itemName}");
             GameObject itemInfoPanel = GameObject.FindWithTag("ItemInfoPanel");
             Transform itemName = itemInfoPanel.transform.Find("ItemName");
             Transform itemDescription = itemInfoPanel.transform.Find("ItemDescription");

@@ -29,7 +29,7 @@ public class EquipmentManager : MonoBehaviour
     {
         for (int i = 0; i < equipmentSlots.Count; i++)
         {
-            Debug.Log($"number of equipment items: {equipmentItems.Count}");
+            // Debug.Log($"number of equipment items: {equipmentItems.Count}");
             if (i < equipmentItems.Count)
             {
                 // Debug.Log($"item props: icon - {equipmentItems[i].weaponItem.icon}");
