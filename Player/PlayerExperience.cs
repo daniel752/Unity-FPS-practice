@@ -10,6 +10,7 @@ public class PlayerExperience : MonoBehaviour
     [SerializeField] Image backXpBar;
     [SerializeField] TextMeshProUGUI levelText;
     [SerializeField] GameObject levelUpVfx;
+    [SerializeField] GameObject levelUpUI;
     AudioSource levelUpSfx;
     private int exp = 0;
     private int expLevelCap = 10;

@@ -9,6 +9,7 @@ public class InventoryManager : MonoBehaviour
     public int inventorySize = 20;
     public GameObject slotPrefab;
     public GameObject itemInfoPrefab;
+    [SerializeField] TextMeshProUGUI moneyText;
     public List<InventorySlot> inventorySlots = new List<InventorySlot>();
     public float slowTimeEffect = 0f;
     private int normalTime = 1;
@@ -63,5 +64,9 @@ public class InventoryManager : MonoBehaviour
                 inventorySlots[i].ClearSlot();
             }
         }
+    }
+    public void UpdateMoneyUI(int money)
+    {
+        moneyText.text = "Money: " + money;
     }
 }

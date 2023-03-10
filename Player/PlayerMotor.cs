@@ -121,6 +121,10 @@ public class PlayerMotor : MonoBehaviour
     {
         weapon.firing = false;
     }
+    public void Reload()
+    {
+        weapon.Reload();
+    }
     private void OnWeaponEquipped(Weapon weapon)
     {
         this.weapon = weapon;

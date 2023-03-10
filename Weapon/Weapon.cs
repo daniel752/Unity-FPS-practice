@@ -13,16 +13,22 @@ public class Weapon : MonoBehaviour
     WeaponAim weaponAim;
     int fireRate;
     int damage;
+    int magazineSize;
+    int bulletsLeft;
     float timeBetweenShots;
     public GameObject muzzleFlash;
     public bool firing;
+    DisplayAmmoUI displayAmmoUI;
     
     public void Init()
     {
         SetWeaponStats();
         SetWeaponAim();
         fireShotSound = GetComponent<AudioSource>();
-        Debug.Log($"dmg:{damage}, fire rate:{fireRate}");
+        displayAmmoUI = transform.parent.GetComponentInParent<DisplayAmmoUI>();
+        displayAmmoUI.Init(this);
+        // displayAmmoUI.UpdateAmmoUI();
+        // Debug.Log($"dmg:{damage}, fire rate:{fireRate}");
     }
 
     public void SetWeaponAim()
@@ -32,22 +38,25 @@ public class Weapon : MonoBehaviour
 
     private void SetWeaponStats()
     {
-        damage = weaponItem.damage;
-        fireRate = weaponItem.fireRate;
+        // Debug.Log($"Setting weapon {weaponItem.itemName} with dmg {weaponItem.GetDamage()} and fire rate {weaponItem.GetFireRate()} with magazine size {weaponItem.GetMagazineSize()}");
+        damage = weaponItem.GetDamage();
+        fireRate = weaponItem.GetFireRate();
+        magazineSize = weaponItem.GetMagazineSize();
+        bulletsLeft = magazineSize;
     }
 
     private void FixedUpdate()
     {
         timeBetweenShots += Time.deltaTime;
 
-        if(firing && timeBetweenShots >= 1f / fireRate)
+        if(firing && timeBetweenShots >= 1f / fireRate && bulletsLeft > 0)
         {
             Fire();
         }
     }
     public void Fire()
     {
-        if(firing && timeBetweenShots >= 1f / fireRate)
+        if(firing && timeBetweenShots >= 1f / fireRate && bulletsLeft > 0)
         {
             Vector3 spawnDirection = weaponAim.transform.forward;
             // Instantiate the projectile and set its position and rotation
@@ -61,9 +70,15 @@ public class Weapon : MonoBehaviour
             newMuzzleFlash.transform.parent = weaponAim.transform;
             // Reset the time between shots
             timeBetweenShots = 0;
+            bulletsLeft--;
+            displayAmmoUI.UpdateAmmoUI(this);
         }
     }
-
+    public void Reload()
+    {
+        bulletsLeft = magazineSize;
+        displayAmmoUI.UpdateAmmoUI(this);
+    }
     private Vector3 GetSpawnDirection()
     {
         Vector3 spawnDirection = Vector3.zero;
@@ -107,5 +122,13 @@ public class Weapon : MonoBehaviour
     public int GetDamage()
     {
         return damage;
+    }
+    public int GetMagazineSize()
+    {
+        return magazineSize;
+    }
+    public int GetBulletsLeft()
+    {
+        return bulletsLeft;
     }
 }

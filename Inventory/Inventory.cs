@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -9,6 +10,7 @@ public class Inventory : MonoBehaviour
     // List<InventoryItem> equipmentItems = new List<InventoryItem>();
     [SerializeField] InventoryManager inventoryManager;
     [SerializeField] Equipment equipment;
+    int money;
     private void Awake() 
     {
         equipment = GetComponent<Equipment>();    
@@ -18,7 +20,11 @@ public class Inventory : MonoBehaviour
     {
         foreach (Item itemToAdd in itemsToAdd)
         {
-            if (itemToAdd.stackable && items.Contains(itemToAdd))
+            if (itemToAdd.itemName == "Money")
+            {
+                AddMoney(itemToAdd.amount);
+            }
+            else if (itemToAdd.stackable && items.Contains(itemToAdd))
             {
                 InventoryItem newItemSlot = inventoryItems.Find(i => i.item.itemName == itemToAdd.itemName); 
                 newItemSlot.AddToStack(itemToAdd.amount);
@@ -40,9 +46,22 @@ public class Inventory : MonoBehaviour
             }
         }
     }
+
+    private void AddMoney(int amount)
+    {
+        money += amount;
+        inventoryManager.UpdateMoneyUI(money);
+    }
+
     public void AddItem(Item itemToAdd)
     {   
-        if (itemToAdd.stackable && items.Contains(itemToAdd))
+        // Debug.Log($"Item name: {itemToAdd.itemName}");
+        if (itemToAdd.itemName == "Money")
+        {
+            // Debug.Log("Adding money");
+            AddMoney(itemToAdd.amount);
+        }
+        else if (itemToAdd.stackable && items.Contains(itemToAdd))
         {
             InventoryItem newItemSlot = inventoryItems.Find(i => i.item.itemName == itemToAdd.itemName); 
             newItemSlot.AddToStack(itemToAdd.amount);

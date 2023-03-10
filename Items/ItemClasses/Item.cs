@@ -28,11 +28,12 @@ public abstract class Item : ScriptableObject
     public string itemName;
     public Sprite icon;
     public bool stackable;
-    public ItemType itemType;
+    // public ItemType itemType;
     public int amount;
     public bool equipable;
     [TextArea(3,5)]
     public string itemDescription;
+    public GameObject itemPrefab;
 
     public string GetitemName()
     { return itemName; }
@@ -40,8 +41,8 @@ public abstract class Item : ScriptableObject
     { return icon; }
     public bool Getstackable()
     { return stackable; }
-    public ItemType GetitemType()
-    { return itemType; }
+    // public ItemType GetitemType()
+    // { return itemType; }
     private int Getamount()
     { return amount; }
     private bool Getequipable()

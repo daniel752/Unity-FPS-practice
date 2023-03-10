@@ -78,6 +78,12 @@ public class InputManager : MonoBehaviour
             if (!inventoryOpen && WeaponEquipped())
                 motor.StopFire();
         };
+        onFoot.Reload.performed += ctx =>
+        {
+            // Debug.Log($"Input for reload");
+            if (!inventoryOpen && WeaponEquipped())
+                motor.Reload();
+        };
         UI.OpenInventory.performed += ctx => 
         {
             if (!inventoryOpen) 

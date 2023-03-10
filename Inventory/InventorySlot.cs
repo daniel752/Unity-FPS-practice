@@ -13,23 +13,23 @@ public class InventorySlot : MonoBehaviour
 
     public void DrawSlot(InventoryItem item)
     {
-        if (item.item != null)
-        {
-            icon.sprite = item.item.icon;
-            icon.enabled = true;
-            itemName.text = item.item.itemName;
-            if (item.stackSize <= 1)
-                stackSizeText.text = "";
-            else
-                stackSizeText.text = item.stackSize.ToString();
-        }
-        else
-        {
-            icon.sprite = item.weaponItem.icon;
-            icon.enabled = true;
-            itemName.text = item.weaponItem.itemName;
+        // if (item.item != null)
+        // {
+        icon.sprite = item.item.icon;
+        icon.enabled = true;
+        itemName.text = item.item.itemName;
+        if (item.stackSize <= 1)
             stackSizeText.text = "";
-        }
+        else
+            stackSizeText.text = item.stackSize.ToString();
+        // }
+        // else
+        // {
+        //     icon.sprite = item.weaponItem.icon;
+        //     icon.enabled = true;
+        //     itemName.text = item.weaponItem.itemName;
+        //     stackSizeText.text = "";
+        // }
     }
 
     public void ClearSlot()
@@ -66,13 +66,13 @@ public class InventorySlot : MonoBehaviour
             }
             else if (inventoryItem.item is WeaponItem)
             {
-                // Debug.Log("equip item");
+                Debug.Log("equip item");
                 WeaponItem weaponItem = (WeaponItem)inventoryItem.item;
                 WeaponManager weaponManager = GameObject.FindWithTag("Player").GetComponent<WeaponManager>();
                 weaponManager.EquipWeapon(weaponItem);
                 if (!inventoryItem.equipped)
                 {
-                    // Debug.Log("moving item to equipment");
+                    Debug.Log("moving item to equipment");
                     // inventoryItem.equipped = true;
                     inventory.GetEquipment().EquipItem(inventoryItem);
                     inventory.RemoveItem(weaponItem);
@@ -83,24 +83,24 @@ public class InventorySlot : MonoBehaviour
     }
     public void OnMouseOver()
     {
-        if (inventoryItem.weaponItem != null)
-        {
+        // if (inventoryItem.item is WeaponItem)
+        // {
             // Debug.Log($"Mouse over slot {inventoryItem.weaponItem.itemName}");
-            GameObject itemInfoPanel = GameObject.FindWithTag("ItemInfoPanel");
-            Transform itemName = itemInfoPanel.transform.Find("ItemName");
-            Transform itemDescription = itemInfoPanel.transform.Find("ItemDescription");
-            itemName.GetComponent<TextMeshProUGUI>().text = inventoryItem.weaponItem.itemName;
-            itemDescription.GetComponent<TextMeshProUGUI>().text = inventoryItem.weaponItem.itemDescription;
-        }
-        else
-        {
-            // Debug.Log($"Mouse over slot {inventoryItem.item.itemName}");
-            GameObject itemInfoPanel = GameObject.FindWithTag("ItemInfoPanel");
-            Transform itemName = itemInfoPanel.transform.Find("ItemName");
-            Transform itemDescription = itemInfoPanel.transform.Find("ItemDescription");
-            itemName.GetComponent<TextMeshProUGUI>().text = inventoryItem.item.itemName;
-            itemDescription.GetComponent<TextMeshProUGUI>().text = inventoryItem.item.itemDescription;    
-        }
+        GameObject itemInfoPanel = GameObject.FindWithTag("ItemInfoPanel");
+        Transform itemName = itemInfoPanel.transform.Find("ItemName");
+        Transform itemDescription = itemInfoPanel.transform.Find("ItemDescription");
+        itemName.GetComponent<TextMeshProUGUI>().text = inventoryItem.item.itemName;
+        itemDescription.GetComponent<TextMeshProUGUI>().text = inventoryItem.item.itemDescription;
+        // }
+        // else
+        // {
+        //     // Debug.Log($"Mouse over slot {inventoryItem.item.itemName}");
+        //     GameObject itemInfoPanel = GameObject.FindWithTag("ItemInfoPanel");
+        //     Transform itemName = itemInfoPanel.transform.Find("ItemName");
+        //     Transform itemDescription = itemInfoPanel.transform.Find("ItemDescription");
+        //     itemName.GetComponent<TextMeshProUGUI>().text = inventoryItem.item.itemName;
+        //     itemDescription.GetComponent<TextMeshProUGUI>().text = inventoryItem.item.itemDescription;    
+        // }
     }
     
     // public void OnMouseExit() 

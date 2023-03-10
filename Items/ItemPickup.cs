@@ -10,7 +10,12 @@ public class ItemPickup : Interactable
     {
         Inventory inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
 
-        if (item is ConsumableItem)
+        if (item is MiscItem)
+        {
+            MiscItem miscItem = (MiscItem)item;
+            inventory.AddItem(miscItem);
+        }
+        else if (item is ConsumableItem)
         {
             ConsumableItem consumableItem = (ConsumableItem)item;
             inventory.AddItem(consumableItem);

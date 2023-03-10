@@ -4,8 +4,6 @@
 public class InventoryItem
 {
     public Item item;
-    // public Item item;
-    public WeaponItem weaponItem;
     public int stackSize;
     public bool equipped;
 
