@@ -15,23 +15,27 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float rotationSpeed = 8;
     // [SerializeField] private float moveSpeed = 3;
     [SerializeField] LayerMask detectionLayer;
-    [SerializeField] Weapon weapon;
+    [SerializeField] EnemyWeapon weapon;
     [SerializeField] float attackRange = 5;
     [SerializeField] float damage = 2;
-    [SerializeField] float timeBetweenAttacks = 3;
-    [SerializeField] PlayerExperience playerExperience;
-    void Start()
+    [SerializeField] float timeBetweenAttacks = 1.5f;
+    [SerializeField] float moveRadius = 5f;
+    float time = 0;
+    // [SerializeField] float moveTime = 5f;
+    PlayerExperience playerExperience;
+    EnemyAim enemyAim;
+    void Awake()
     {
         stateMachine = GetComponent<StateMachine>();
         agent = GetComponent<NavMeshAgent>();
         stateMachine.Initialise();
+        weapon.Init();
         detectionLayer = LayerMask.GetMask("Player");
-        weapon = GetComponent<Weapon>();
+        // weapon = GetComponent<Weapon>();
         target = null;
         playerExperience = GameObject.FindWithTag("Player").GetComponent<PlayerExperience>();
+        enemyAim = GetComponentInChildren<EnemyAim>();
     }
-
-    // Update is called once per frame
     void Update()
     {
         currentState = stateMachine.activeState.ToString();
@@ -50,6 +54,12 @@ public class Enemy : MonoBehaviour
         // Debug.Log(name + " moving to " + target.name);
         agent.SetDestination(target.transform.position);
         // transform.position += transform.TransformDirection(transform.forward * moveSpeed * Time.deltaTime);
+    }
+    public void AttackMovement()
+    {
+        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * moveRadius;
+        Vector3 destination = target.transform.position + randomDirection;
+        agent.SetDestination(destination);
     }
     public void Die()
     {
@@ -70,12 +80,26 @@ public class Enemy : MonoBehaviour
     }
     public bool TargetInAttackRange()
     {
-        if (Vector3.Distance(transform.position,target.transform.position) <= attackRange)
+        if (weapon != null)
         {
-            // Debug.Log("Target " + target.name + " in range");
+            // Debug.Log($"{weapon} isn't null");
+            // Projectile projectile = weapon.GetProjectilePrefab().GetComponent<Projectile>();
+            // Debug.Log($"projectile range {projectile.GetRange()}");
+            // Debug.Log($"distance:{Vector3.Distance(transform.position,target.transform.position)} <=? {weapon.GetRange()}");
+            if (Vector3.Distance(transform.position,target.transform.position) <= weapon.GetRange())
+            {
+                Debug.Log($"{target} in weapon {weapon} range of {weapon.GetRange()}");
+                return true;
+            }
+            else
+                return false;
+        }
+        else if (Vector3.Distance(transform.position,target.transform.position) <= attackRange)
+        {
+            Debug.Log("Target " + target + " in range");
             return true;
         }
-        // Debug.Log("Target " + target.name + " not in range");
+        Debug.Log("Target " + target.name + " not in range");
         return false;
     }
     public float GetDamage()
@@ -85,5 +109,25 @@ public class Enemy : MonoBehaviour
     public float GetTimeBetweenAttacks()
     {
         return timeBetweenAttacks;
+    }
+    public EnemyWeapon GetEnemyWeapon()
+    {
+        return weapon;
+    }
+    public float GetTime()
+    {
+        return time;
+    }
+    public void SetTime(float time)
+    {
+        this.time = time;
+    }
+    public void AddTime(float time)
+    {
+        this.time += time;
+    }
+    public EnemyAim GetEnemyAim()
+    {
+        return enemyAim;
     }
 }

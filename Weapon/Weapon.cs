@@ -5,47 +5,51 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] GameObject weaponPrefab;
-    [SerializeField] GameObject projectilePrefab;
-    [SerializeField] WeaponItem weaponItem;
-    [SerializeField] Transform spawnPosition;
-    AudioSource fireShotSound;
-    WeaponAim weaponAim;
-    int fireRate;
-    int damage;
-    int magazineSize;
-    int bulletsLeft;
-    float timeBetweenShots;
+    [SerializeField] protected GameObject weaponPrefab;
+    [SerializeField] protected GameObject projectilePrefab;
+    [SerializeField] protected WeaponItem weaponItem;
+    [SerializeField] protected Transform spawnPosition;
+    protected AudioSource fireShotSound;
+    protected WeaponAim weaponAim;
+    protected int fireRate;
+    protected int damage;
+    protected int range;
+    protected int magazineSize;
+    protected int bulletsLeft;
+    protected float timeBetweenShots;
     public GameObject muzzleFlash;
     public bool firing;
     DisplayAmmoUI displayAmmoUI;
     
-    public void Init()
+    public virtual void Init()
     {
         SetWeaponStats();
         SetWeaponAim();
         fireShotSound = GetComponent<AudioSource>();
         displayAmmoUI = transform.parent.GetComponentInParent<DisplayAmmoUI>();
         displayAmmoUI.Init(this);
+        Physics.IgnoreLayerCollision(9,11,true);
         // displayAmmoUI.UpdateAmmoUI();
         // Debug.Log($"dmg:{damage}, fire rate:{fireRate}");
     }
 
-    public void SetWeaponAim()
+    protected virtual void SetWeaponAim()
     {
         weaponAim = transform.parent.GetComponent<WeaponAim>();
+        Debug.Log($"weapon aim set");
     }
 
-    private void SetWeaponStats()
+    protected void SetWeaponStats()
     {
         // Debug.Log($"Setting weapon {weaponItem.itemName} with dmg {weaponItem.GetDamage()} and fire rate {weaponItem.GetFireRate()} with magazine size {weaponItem.GetMagazineSize()}");
         damage = weaponItem.GetDamage();
         fireRate = weaponItem.GetFireRate();
+        range = weaponItem.GetRange();
         magazineSize = weaponItem.GetMagazineSize();
         bulletsLeft = magazineSize;
     }
 
-    private void FixedUpdate()
+    protected void FixedUpdate()
     {
         timeBetweenShots += Time.deltaTime;
 
@@ -54,7 +58,7 @@ public class Weapon : MonoBehaviour
             Fire();
         }
     }
-    public void Fire()
+    public virtual void Fire()
     {
         if(firing && timeBetweenShots >= 1f / fireRate && bulletsLeft > 0)
         {
@@ -74,12 +78,12 @@ public class Weapon : MonoBehaviour
             displayAmmoUI.UpdateAmmoUI(this);
         }
     }
-    public void Reload()
+    public virtual void Reload()
     {
         bulletsLeft = magazineSize;
         displayAmmoUI.UpdateAmmoUI(this);
     }
-    private Vector3 GetSpawnDirection()
+    protected virtual Vector3 GetSpawnDirection()
     {
         Vector3 spawnDirection = Vector3.zero;
         Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
@@ -123,6 +127,10 @@ public class Weapon : MonoBehaviour
     {
         return damage;
     }
+    public int GetRange()
+    {
+        return range;
+    }
     public int GetMagazineSize()
     {
         return magazineSize;
@@ -130,5 +138,9 @@ public class Weapon : MonoBehaviour
     public int GetBulletsLeft()
     {
         return bulletsLeft;
+    }
+    public GameObject GetProjectilePrefab()
+    {
+        return projectilePrefab;
     }
 }

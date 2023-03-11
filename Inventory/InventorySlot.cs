@@ -66,13 +66,13 @@ public class InventorySlot : MonoBehaviour
             }
             else if (inventoryItem.item is WeaponItem)
             {
-                Debug.Log("equip item");
+                // Debug.Log("equip item");
                 WeaponItem weaponItem = (WeaponItem)inventoryItem.item;
                 WeaponManager weaponManager = GameObject.FindWithTag("Player").GetComponent<WeaponManager>();
                 weaponManager.EquipWeapon(weaponItem);
                 if (!inventoryItem.equipped)
                 {
-                    Debug.Log("moving item to equipment");
+                    // Debug.Log("moving item to equipment");
                     // inventoryItem.equipped = true;
                     inventory.GetEquipment().EquipItem(inventoryItem);
                     inventory.RemoveItem(weaponItem);

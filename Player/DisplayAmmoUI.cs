@@ -10,13 +10,13 @@ public class DisplayAmmoUI : MonoBehaviour
 
     public void Init(Weapon weapon) 
     {
-        Debug.Log($"Init ammo UI");
+        // Debug.Log($"Init ammo UI");
         // weapon = transform.Find("WeaponSlot").GetComponentInChildren<Weapon>();
         UpdateAmmoUI(weapon);
     }
     public void UpdateAmmoUI(Weapon weapon)
     {
-        Debug.Log($"ammo left {weapon.GetBulletsLeft()} / {weapon.GetMagazineSize()}");
+        // Debug.Log($"ammo left {weapon.GetBulletsLeft()} / {weapon.GetMagazineSize()}");
         ammoText.text = weapon.GetBulletsLeft() + " / " + weapon.GetMagazineSize();
     }
 }

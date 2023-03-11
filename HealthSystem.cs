@@ -27,4 +27,8 @@ public class HealthSystem : MonoBehaviour
     {
         return health;
     }
+    public void SetHealth(float health)
+    {
+        this.health = health;
+    }
 }

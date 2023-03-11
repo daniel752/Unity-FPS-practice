@@ -2,23 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponAim : MonoBehaviour
+public class EnemyAim : MonoBehaviour
 {
-    [SerializeField] Camera playerCamera;
     [SerializeField] Transform weaponTransform;
-    [SerializeField] GameObject reticle;
     private float range = 30;
 
-    private void Awake() 
+    void Awake()
     {
-        playerCamera = Camera.main;
-        weaponTransform = transform;    
+        weaponTransform = transform;
     }
 
     private void Update() 
     {
-        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
-        // Debug.DrawRay(ray.origin,ray.direction * range);
+        Ray ray = new Ray(transform.position, transform.forward);
+        Debug.DrawRay(ray.origin,ray.direction * range);
         weaponTransform.LookAt(ray.GetPoint(range));
         // RaycastHit hit;
         // if (Physics.Raycast(ray, out hit))
@@ -29,5 +26,12 @@ public class WeaponAim : MonoBehaviour
         // {
         //     weaponTransform.LookAt(ray.direction * range,);
         // }
+    }
+    public void AimAtTarget(Transform target)
+    {
+        Vector3 direction = target.position - transform.position;
+        direction.y = 0;
+        Quaternion rotation = Quaternion.LookRotation(direction);
+        weaponTransform.rotation = rotation;
     }
 }

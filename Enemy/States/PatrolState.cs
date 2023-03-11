@@ -10,21 +10,26 @@ public class PatrolState : BaseState
     private float time;
     public override void Enter()
     {
-    
+        
     }
     public override void Perform()
     {
         PatrolCycle();
-        Collider[] hits = Physics.OverlapBox(enemy.transform.position, enemy.GetComponent<BoxCollider>().size / 2f, enemy.transform.rotation, enemy.GetDetectionLayer());
-        foreach (Collider hit in hits)
+        if (enemy.GetTarget() != null)
+            stateMachine.ChangeState(stateMachine.alertState);
+        else
         {
-            if (hit.CompareTag("Player"))
+            Collider[] hits = Physics.OverlapBox(enemy.transform.position, enemy.GetComponent<BoxCollider>().size / 2f, enemy.transform.rotation, enemy.GetDetectionLayer());
+            foreach (Collider hit in hits)
             {
-                // Debug.Log("Colliding with " + hit.gameObject.name);
-                enemy.SetTarget(hit.gameObject);
-                stateMachine.ChangeState(stateMachine.alertState);
+                if (hit.CompareTag("Player"))
+                {
+                    // Debug.Log("Colliding with " + hit.gameObject.name);
+                    enemy.SetTarget(hit.gameObject);
+                    stateMachine.ChangeState(stateMachine.alertState);
+                }
             }
-    }
+        }
     }
     public override void Exit()
     {

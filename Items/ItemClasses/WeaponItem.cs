@@ -7,6 +7,7 @@ public class WeaponItem : Item
 {
     [SerializeField] int damage;
     [SerializeField] int fireRate;
+    [SerializeField] int range;
     [SerializeField] int magazineSize;
     // [SerializeField] GameObject weaponPrefab;
 
@@ -21,6 +22,10 @@ public class WeaponItem : Item
     public int GetMagazineSize()
     {
         return magazineSize;
+    }
+    public int GetRange()
+    {
+        return range;
     }
     // public GameObject GetWeaponPrefab()
     // {

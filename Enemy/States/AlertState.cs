@@ -15,7 +15,7 @@ public class AlertState : BaseState
             enemy.RotateToPlayer();
             enemy.MoveToPlayer();
         }
-        if (enemy.TargetInAttackRange())
+        else if (enemy.TargetInAttackRange())
         {
             stateMachine.ChangeState(stateMachine.attackState);
         }

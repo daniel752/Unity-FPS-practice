@@ -12,8 +12,8 @@ public class PlayerHealth : HealthSystem
     public float chipSpeed = 2f;
     [Header("Damage Overlay")]
     public Image overlay;
-    public float duration;
-    public float fadeSpeed;
+    public float duration = 1;
+    public float fadeSpeed = 2;
     private float durationTimer;
     // Start is called before the first frame update
     void Start()
